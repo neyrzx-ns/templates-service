@@ -1,0 +1,130 @@
+syntax = "proto3";
+
+package ns.template.v1;
+
+option go_package = "github.com/neyrzx-ns/template-service/v1";
+
+service TemplateService {
+  rpc CreateTemplate(CreateTemplateRequest) returns (CreateTemplateResponse) {}
+  rpc CreateTemplates(CreateTemplatesRequest) returns (CreateTemplatesResponse) {}
+  rpc UpdateTemplate(UpdateTemplateRequest) returns (UpdateTemplateResponse) {}
+  rpc DeleteTemplate(DeleteTemplateRequest) returns (DeleteTemplateResponse) {}
+  rpc DeleteTemplates(DeleteTemplatesRequest) returns (DeleteTemplatesResponse) {}
+  rpc GetTemplate(GetTemplateRequest) returns (GetTemplateResponse) {}
+  rpc ListTemplates(ListTemplatesRequest) returns (ListTemplatesResponse) {}
+  rpc CreateTemplateGroup(CreateTemplateGroupRequest) returns (CreateTemplateGroupResponse) {}
+  rpc UpdateTemplateGroup(UpdateTemplateGroupRequest) returns (UpdateTemplateGroupResponse) {}
+  rpc DeleteTemplateGroup(DeleteTemplateGroupRequest) returns (DeleteTemplateGroupResponse) {}
+  rpc GetTemplateGroup(GetTemplateGroupRequest) returns (GetTemplateGroupResponse) {}
+  rpc ListTemplateGroups(ListTemplateGroupsRequest) returns (ListTemplateGroupsResponse) {}
+}
+
+enum TemplateChannelType {
+  CHANNELTYPE_UNSPECIFIED = 0;
+  CHANNELTYPE_IN_APP = 1;
+  CHANNELTYPE_MESSENGER = 2;
+  CHANNELTYPE_EMAIL = 3;
+  CHANNELTYPE_SMS = 4;
+}
+
+message Template {
+  string uid = 1;
+  string name = 2;
+  string description = 3;
+  string text = 4;
+  TemplateChannelType channel = 5;
+  repeated string variables = 6;
+}
+
+message TemplateGroup {
+  string uid = 1;
+  string name = 2;
+  string description = 3;
+  repeated Template templates = 4;
+  map<string, string> meta_variables = 5;
+}
+
+message CreateTemplateRequest {
+  string name = 1;
+  string description = 2;
+  string text = 3;
+  TemplateChannelType channel = 4;
+  repeated string variables = 5;
+}
+
+message CreateTemplateResponse {
+  Template template = 1;
+}
+
+message CreateTemplatesRequest{
+  repeated CreateTemplateGroupRequest templates = 1;
+}
+
+message CreateTemplatesResponse {
+  repeated Template templates = 1;
+}
+
+message UpdateTemplateRequest {
+  Template template = 1;
+}
+
+message UpdateTemplateResponse {
+  Template template = 1;
+}
+
+message DeleteTemplateRequest {
+  string uid = 1;
+}
+
+message DeleteTemplateResponse {}
+
+message DeleteTemplatesRequest {
+  repeated string uids = 1;
+}
+
+message DeleteTemplatesResponse {}
+
+message GetTemplateRequest {
+  string uid = 1;
+}
+
+message GetTemplateResponse {
+  Template template = 1;
+}
+
+message ListTemplatesRequest {
+  string uids = 1;
+}
+
+message ListTemplatesResponse {
+  repeated Template templates = 1;
+}
+
+message CreateTemplateGroupRequest {
+  string name = 1;
+  string description = 2;
+  repeated Template templates = 3;
+  map<string, string> meta_params = 4;
+}
+
+message CreateTemplateGroupResponse {}
+
+message UpdateTemplateGroupRequest {}
+
+message UpdateTemplateGroupResponse {}
+
+message DeleteTemplateGroupRequest {}
+
+message DeleteTemplateGroupResponse {}
+
+message DeleteTemplateGroupsRequest {}
+
+message DeleteTemplateGroupsResponse {}
+
+message GetTemplateGroupRequest {}
+
+message GetTemplateGroupResponse {}
+
+message ListTemplateGroupsRequest {}
+
+message ListTemplateGroupsResponse {}
