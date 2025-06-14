@@ -5,6 +5,7 @@ set -e
 OUT_DIR="${PWD}/pkg"
 
 rm -rf "${OUT_DIR}/api"
+mkdir -p "${OUT_DIR}"
 
 docker run --rm --user "$(id -u)" --volume "${PWD}":"${PWD}" --workdir "${PWD}" ryme/tool-protoc:latest \
   --proto_path "${PWD}" \
