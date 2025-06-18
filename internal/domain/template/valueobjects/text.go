@@ -1,53 +1,50 @@
 package valueobjects
 
-import "errors"
-
-type Spec interface {
+type Specification interface {
 	~string
-
 	Validate() error
 }
 
-type SMSSpec string
+type SMSSpecification string
 
-func NewSMSSpec(text string) (SMSSpec, error) {
+func NewSMSSpecification(text string) (SMSSpecification, error) {
 	// TODO: validation
-	return SMSSpec(text), nil
+	return SMSSpecification(text), nil
 }
 
-func (s SMSSpec) Validate() error {
+func (s SMSSpecification) Validate() error {
 	return nil
 }
 
-type PushNotificationSpec string
+type PushNotificationSpecification string
 
-func NewPushNotificationSpec(text string) (PushNotificationSpec, error) {
+func NewPushNotificationSpecification(text string) (PushNotificationSpecification, error) {
 	// TODO: validation
-	return PushNotificationSpec(text), nil
+	return PushNotificationSpecification(text), nil
 }
 
-func (s PushNotificationSpec) Validate() error {
-	return errors.New("not implemented")
-}
-
-type MessengerSpec string
-
-func NewMessengerSpec(text string) (MessengerSpec, error) {
-	// TODO: validation
-	return MessengerSpec(text), nil
-}
-
-func (s MessengerSpec) Validate() error {
+func (s PushNotificationSpecification) Validate() error {
 	return nil
 }
 
-type EmailSpec string
+type MessengerSpecification string
 
-func NewEmailSpec(text string) (EmailSpec, error) {
+func NewMessengerSpecification(text string) (MessengerSpecification, error) {
 	// TODO: validation
-	return EmailSpec(text), nil
+	return MessengerSpecification(text), nil
 }
 
-func (s EmailSpec) Validate() error {
+func (s MessengerSpecification) Validate() error {
+	return nil
+}
+
+type EmailSpecification string
+
+func NewEmailSpecification(text string) (EmailSpecification, error) {
+	// TODO: validation
+	return EmailSpecification(text), nil
+}
+
+func (s EmailSpecification) Validate() error {
 	return nil
 }

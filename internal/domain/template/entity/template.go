@@ -2,43 +2,49 @@ package entity
 
 import (
 	"errors"
+	"regexp"
 	"templates-service/internal/domain/template/valueobjects"
 )
 
-type Template[Spec valueobjects.Spec] struct {
+var (
+	templateVariablesGroupName = "variable"
+	templateVariablesRegexp    = regexp.MustCompile(`{{\s?.(?P<variable>\w+)\s?}}`)
+)
+
+type Template[Specification valueobjects.Specification] struct {
 	id          valueobjects.TemplateID
 	name        valueobjects.Name
 	description valueobjects.Description
-	text        Spec
+	text        Specification
 	variables   []string
 }
 
-func (t Template[Spec]) ID() valueobjects.TemplateID {
+func (t Template[Specification]) ID() valueobjects.TemplateID {
 	return t.id
 }
 
-func (t Template[Spec]) Name() valueobjects.Name {
+func (t Template[Specification]) Name() valueobjects.Name {
 	return t.name
 }
 
-func (t Template[Spec]) Description() valueobjects.Description {
+func (t Template[Specification]) Description() valueobjects.Description {
 	return t.description
 }
 
-func (t Template[Spec]) Text() Spec {
+func (t Template[Specification]) Text() Specification {
 	return t.text
 }
 
-func NewTemplate[Spec valueobjects.Spec]() Template[Spec] {
+func NewTemplate[Spec valueobjects.Specification]() Template[Spec] {
 	return Template[Spec]{id: valueobjects.NewTemplateID()}
 }
 
-type TemplateBuilder[Spec valueobjects.Spec] struct {
+type TemplateBuilder[Spec valueobjects.Specification] struct {
 	template Template[Spec]
 	errs     []error
 }
 
-func NewTemplateBuilder[Spec valueobjects.Spec]() TemplateBuilder[Spec] {
+func NewTemplateBuilder[Spec valueobjects.Specification]() TemplateBuilder[Spec] {
 	return TemplateBuilder[Spec]{template: NewTemplate[Spec]()}
 }
 
@@ -66,7 +72,14 @@ func (b *TemplateBuilder[Spec]) SetText(text string) *TemplateBuilder[Spec] {
 		b.errs = append(b.errs, err)
 	}
 
+	groupNameIndex := templateVariablesRegexp.SubexpIndex(templateVariablesGroupName)
+
+	for _, variable := range templateVariablesRegexp.FindAllStringSubmatch(text, -1) {
+		b.template.variables = append(b.template.variables, variable[groupNameIndex])
+	}
+
 	b.template.text = voText
+
 	return b
 }
 
